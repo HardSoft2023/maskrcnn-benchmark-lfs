@@ -28,20 +28,10 @@ ENV PATH=$CONDA_PREFIX/bin:$PATH
 ENV CONDA_AUTO_UPDATE_CONDA=false
 
 RUN conda install -y ipython
-RUN pip install ninja yacs cython matplotlib jupyter
+RUN pip install ninja yacs cython matplotlib
 
-# Install PyTorch 1.0 Nightly and OpenCV
-RUN conda install -y pytorch-nightly -c pytorch \
- && conda install -y opencv -c menpo \
- && conda clean -ya
-
-WORKDIR /root
-
-USER root
-
-RUN mkdir /notebooks
-
-WORKDIR /notebooks
+# Install PyTorch 1.0 Nightly
+RUN conda install -y pytorch-nightly -c pytorch && conda clean -ya
 
 # Install TorchVision master
 RUN git clone https://github.com/pytorch/vision.git \
@@ -54,14 +44,6 @@ RUN git clone https://github.com/cocodataset/cocoapi.git \
  && python setup.py build_ext install
 
 # install PyTorch Detection
-RUN git clone https://github.com/facebookresearch/maskrcnn-benchmark.git \
- && cd maskrcnn-benchmark \
- && python setup.py build develop
+RUN git clone https://github.com/facebookresearch/maskrcnn-benchmark.git
 
-RUN jupyter notebook --generate-config
-
-ENV CONFIG_PATH="/root/.jupyter/jupyter_notebook_config.py"
-
-COPY "jupyter_notebook_config.py" ${CONFIG_PATH}
-
-ENTRYPOINT ["sh", "-c", "jupyter notebook --allow-root -y --no-browser --ip=0.0.0.0 --config=${CONFIG_PATH}"]
+WORKDIR /maskrcnn-benchmark
