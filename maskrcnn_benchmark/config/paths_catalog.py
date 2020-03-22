@@ -6,7 +6,9 @@ from copy import deepcopy
 
 class DatasetCatalog(object):
     DATA_DIR = "datasets"
+
     DATASETS = {
+<<<<<<< HEAD
         "coco_2017_train": {
             "img_dir": "coco/train2017",
             "ann_file": "coco/annotations/instances_train2017.json"
@@ -147,6 +149,31 @@ class DatasetCatalog(object):
             "mode": "mask",
             "mini": 10,
         },
+=======
+#        "coco_2014_train": (
+#            "coco/train2014",
+#            "coco/annotations/instances_train2014.json",
+#        ),
+#        "coco_2014_val": ("coco/val2014", "coco/annotations/instances_val2014.json"),
+
+# coco_2014_minival is for = 2017 val set
+        "coco_2014_minival": (
+            "coco/val2014",
+            "coco/annotations/instances_minival2014.json",
+        ),
+# coco_2014_valminusminival is for = 2017 train set
+        "coco_2014_valminusminival": (
+            "coco/val2014",
+            "coco/annotations/instances_valminusminival2014.json",
+        ),
+#        "voc_2007_trainval": ("voc/VOC2007", 'trainval'),
+#        "voc_2007_test": ("voc/VOC2007", 'test'),
+#        "voc_2012_train": ("voc/VOC2012", 'train'),
+#        "voc_2012_trainval": ("voc/VOC2012", 'trainval'),
+#        "voc_2012_val": ("voc/VOC2012", 'val'),
+#        "voc_2012_test": ("voc/VOC2012", 'test'),
+#
+>>>>>>> 6a9f541cc792510306f248c5f7909f03057c318e
     }
 
     @staticmethod
@@ -155,8 +182,8 @@ class DatasetCatalog(object):
             data_dir = DatasetCatalog.DATA_DIR
             attrs = DatasetCatalog.DATASETS[name]
             args = dict(
-                root=os.path.join(data_dir, attrs["img_dir"]),
-                ann_file=os.path.join(data_dir, attrs["ann_file"]),
+                root=os.path.join(data_dir, attrs[0]),
+                ann_file=os.path.join(data_dir, attrs[1]),
             )
             return dict(
                 factory="COCODataset",
@@ -166,8 +193,8 @@ class DatasetCatalog(object):
             data_dir = DatasetCatalog.DATA_DIR
             attrs = DatasetCatalog.DATASETS[name]
             args = dict(
-                data_dir=os.path.join(data_dir, attrs["data_dir"]),
-                split=attrs["split"],
+                data_dir=os.path.join(data_dir, attrs[0]),
+                split=attrs[1],
             )
             return dict(
                 factory="PascalVOCDataset",

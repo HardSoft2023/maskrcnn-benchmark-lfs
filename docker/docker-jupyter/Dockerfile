@@ -28,6 +28,7 @@ ENV PATH=$CONDA_PREFIX/bin:$PATH
 ENV CONDA_AUTO_UPDATE_CONDA=false
 
 RUN conda install -y ipython
+<<<<<<< HEAD
 RUN pip install requests ninja yacs cython matplotlib jupyter tqdm
 
 # Install PyTorch Nightly
@@ -45,6 +46,12 @@ USER root
 RUN mkdir /notebooks
 
 WORKDIR /notebooks
+=======
+RUN pip install ninja yacs cython matplotlib
+
+# Install PyTorch 1.0 Nightly
+RUN conda install -y pytorch-nightly -c pytorch && conda clean -ya
+>>>>>>> 6a9f541cc792510306f248c5f7909f03057c318e
 
 # Install TorchVision master
 RUN git clone https://github.com/pytorch/vision.git \
@@ -62,6 +69,7 @@ RUN git clone https://github.com/NVIDIA/apex.git \
  && python setup.py install --cuda_ext --cpp_ext
 
 # install PyTorch Detection
+<<<<<<< HEAD
 ARG FORCE_CUDA="1"
 ENV FORCE_CUDA=${FORCE_CUDA}
 RUN git clone https://github.com/facebookresearch/maskrcnn-benchmark.git \
@@ -73,5 +81,8 @@ RUN jupyter notebook --generate-config
 ENV CONFIG_PATH="/root/.jupyter/jupyter_notebook_config.py"
 
 COPY "jupyter_notebook_config.py" ${CONFIG_PATH}
+=======
+RUN git clone https://github.com/facebookresearch/maskrcnn-benchmark.git
+>>>>>>> 6a9f541cc792510306f248c5f7909f03057c318e
 
-ENTRYPOINT ["sh", "-c", "jupyter notebook --allow-root -y --no-browser --ip=0.0.0.0 --config=${CONFIG_PATH}"]
+WORKDIR /maskrcnn-benchmark
