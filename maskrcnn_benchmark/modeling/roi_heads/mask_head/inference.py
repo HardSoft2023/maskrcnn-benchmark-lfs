@@ -177,6 +177,7 @@ class Masker(object):
             for mask, box in zip(masks, boxes.bbox)
         ]
         if len(res) > 0:
+            res = [o.int() for o in res]
             res = torch.stack(res, dim=0)[:, None]
         else:
             res = masks.new_empty((0, 1, masks.shape[-2], masks.shape[-1]))
